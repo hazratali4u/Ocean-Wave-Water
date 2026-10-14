@@ -1,0 +1,101 @@
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using SAMS.BusinessLayer.Classes;
+using SAMS.Common.Classes;
+
+public partial class Forms_RptCreditAging : System.Web.UI.Page
+{
+    private void DistributorType()
+    {
+        DistributorController dController = new DistributorController();
+        DataTable dt = dController.SelectDistributorTypeInfo(Constants.IntNullValue);
+        clsWebFormUtil.FillDropDownList(ddDistributorType, dt, 0, 2);
+    }
+    private void LoadAssingned()
+    {
+        if (ddDistributorType.Items.Count > 0)
+        {
+            drpDistributor.Items.Clear();
+            if (rbtSotBy.SelectedIndex == 0)
+            {
+                SAMSUserController mUserController = new SAMSUserController();
+                DataTable dt = mUserController.SelectUserAssignment(int.Parse(this.Session["UserId"].ToString()), int.Parse(ddDistributorType.SelectedValue.ToString()), 1, int.Parse(this.Session["CompanyId"].ToString()));
+                drpDistributor.Items.Add(new ListItem("All", Constants.IntNullValue.ToString()));
+                clsWebFormUtil.FillDropDownList(drpDistributor, dt, 0, 1);
+            }
+            else
+            {
+                SAMSUserController mUserController = new SAMSUserController();
+                DataTable dt = mUserController.SelectUserAssignment(int.Parse(this.Session["UserId"].ToString()), int.Parse(ddDistributorType.SelectedValue.ToString()), 1, int.Parse(this.Session["CompanyId"].ToString()));
+                clsWebFormUtil.FillDropDownList(drpDistributor, dt, 0, 1);
+            }
+        }
+    }
+    private void LoadPrincipal()
+    {
+        SKUPriceDetailController PController = new SKUPriceDetailController();
+        DataTable m_dt = PController.SelectDataPrice(Constants.IntNullValue, Constants.IntNullValue, Constants.IntNullValue, Constants.IntNullValue, Constants.IntNullValue, int.Parse(this.Session["UserId"].ToString()), Constants.IntNullValue, 0, DateTime.Parse(this.Session["CurrentWorkDate"].ToString()));
+        DrpPrincipal.Items.Add(new ListItem("All", Constants.IntNullValue.ToString()));
+        clsWebFormUtil.FillDropDownList(this.DrpPrincipal, m_dt, 0, 1);
+    }
+    protected void Page_Load(object sender, EventArgs e)
+    {
+        if (!Page.IsPostBack)
+        {
+            this.DistributorType();
+            this.LoadAssingned();
+            this.LoadPrincipal();
+
+            SAMS.Common.Classes.Configuration.SystemCurrentDateTime = (DateTime)this.Session["CurrentWorkDate"];
+            txtDocmentDate.Text = SAMS.Common.Classes.Configuration.SystemCurrentDateTime.ToString("dd-MMM-yyyy");
+        }
+    }
+    protected void Button2_Click(object sender, EventArgs e)
+    {
+        DocumentPrintController mDocumentPrntControl = new DocumentPrintController();
+        DataSet ds = mDocumentPrntControl.GetCreditAgingReport(int.Parse(this.ddDistributorType.SelectedItem.Value), int.Parse(DrpPrincipal.SelectedValue.ToString()), int.Parse(drpDistributor.SelectedValue.ToString()), int.Parse(this.Session["UserId"].ToString()), rbtSotBy.SelectedIndex, DateTime.Parse(txtDocmentDate.Text + " 23:59:59"));
+        SAMS.BusinessLayer.Reports.CrpCreditAgingReport CrpReport = new SAMS.BusinessLayer.Reports.CrpCreditAgingReport();
+        CrpReport.SetDataSource(ds);
+        CrpReport.Refresh();
+        CrpReport.SetParameterValue("UptoDate", txtDocmentDate.Text);
+        CrpReport.SetParameterValue("Principal", DrpPrincipal.SelectedItem.Text);
+
+        this.Session.Add("CrpReport", CrpReport);
+        this.Session.Add("ReportType", 0);
+        string url = "'Default.aspx'";
+        string script = "<script language='JavaScript' type='text/javascript'> window.open(" + url + ",\"Link\",\"toolbar=0,location=0,directories=0,status=0,menubar=0,scrollbars=1,resizable=1,width=800,height=600,left=10,top=10\");</script>";
+        Type cstype = this.GetType();
+        ClientScriptManager cs = Page.ClientScript;
+        cs.RegisterStartupScript(cstype, "OpenWindow", script); 
+    }
+    protected void ddDistributorType_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        this.LoadAssingned();
+    }
+    protected void Button1_Click(object sender, EventArgs e)
+    {
+
+        DocumentPrintController mDocumentPrntControl = new DocumentPrintController();
+        DataSet ds = mDocumentPrntControl.GetCreditAgingReport(int.Parse(this.ddDistributorType.SelectedItem.Value), int.Parse(DrpPrincipal.SelectedValue.ToString()), int.Parse(drpDistributor.SelectedValue.ToString()), int.Parse(this.Session["UserId"].ToString()), rbtSotBy.SelectedIndex, DateTime.Parse(txtDocmentDate.Text + " 23:59:59"));
+        SAMS.BusinessLayer.Reports.CrpCreditAgingReport CrpReport = new SAMS.BusinessLayer.Reports.CrpCreditAgingReport();
+        CrpReport.SetDataSource(ds);
+        CrpReport.Refresh();
+        
+        CrpReport.SetParameterValue("UptoDate", txtDocmentDate.Text);
+
+        this.Session.Add("CrpReport", CrpReport);
+        this.Session.Add("ReportType", 1);
+        string url = "'Default.aspx'";
+        string script = "<script language='JavaScript' type='text/javascript'> window.open(" + url + ",\"Link\",\"toolbar=0,location=0,directories=0,status=0,menubar=0,scrollbars=1,resizable=1,width=800,height=600,left=10,top=10\");</script>";
+        Type cstype = this.GetType();
+        ClientScriptManager cs = Page.ClientScript;
+        cs.RegisterStartupScript(cstype, "OpenWindow", script); 
+    }
+    protected void rbtSotBy_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        this.LoadAssingned();
+    }
+}

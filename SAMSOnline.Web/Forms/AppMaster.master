@@ -1,0 +1,93 @@
+<%@ Master Language="C#" AutoEventWireup="true" CodeFile="AppMaster.master.cs" Inherits="AppMaster" %>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head id="Head1" runat="server">
+<script type="text/javascript"> 
+</script> 
+
+<link href="../App_Themes/Granite/Default.css" rel="stylesheet" type="text/css" />
+
+<link rel="shortcut icon" href="../App_Themes/Granite/Images/favicon.ico" />
+<title>SAMSOnline</title>
+       
+    <!--[if IE 5]>
+	<style type="text/css">		
+		.sidebarcontainer td, .sidebarcontainer tr {font-size:smaller;}		
+		#subnav a {height:1em;}
+	    body td, body th {font-size:0.78em;}		
+	</style>
+	<![endif]-->
+	<!--[if IE 7]>
+	<style type="text/css">		        
+       #rightcolumn{margin-right: -152px;}
+	</style>
+	<![endif]-->	
+	
+   
+</head>
+<body>
+
+   	<form id="mainForm" runat="server" >
+           <div style="z-index: 102; left: 126px; width: 525px; position: absolute;top: 26px; height: 25px; font-size: 1.7em; color: #007395; direction: ltr; text-indent: 18px; font-family: Verdana;">
+               Sales Automation Management System
+            </div>
+   	        <asp:ScriptManager ID="ScriptManager1" runat="server"/>
+ 
+	 
+	        <div id="wrapper" class="wrapper" style="width: 99.5%; height: 100%;">
+			<div id="header" style="z-index: 101; left: 0px; top: 0px;">
+			<asp:Panel ID="searchpanel" runat="server" Height="8px" Width="65px" Visible="false">
+			<div id="search" style="right: 4px; bottom: 4px" >
+                <table>
+                    <tr>
+                        <td colspan="1" align="right">
+                            <asp:Label ID="lblCurrentWorkDate" runat="server" Font-Size="10pt" ForeColor="#007395" Width="200px"></asp:Label></td>
+                    </tr>
+                    <tr>
+                        <td align="right">
+                <asp:Label ID="Label1" runat="server" Text="..." Font-Bold="False" Font-Italic="False" ForeColor="#007395" Font-Size="10pt" Width="187px"></asp:Label></td>
+                         
+                    </tr>
+                     <tr>
+                        <td align="right">  &nbsp;<asp:LinkButton ID="LinkButton1" runat="server" Font-Size="10pt" ForeColor="#007395" OnClick="LinkButton1_Click" Font-Bold="False">Sign Out</asp:LinkButton></td>
+                         
+                    </tr>
+                    
+                </table>
+                </div>
+                   </asp:Panel> 
+                <img id= "Samsimage" src="../App_Themes/Granite/Images/samslogo.gif" style="width: 117px; height: 63px" />&nbsp;</div>
+			<div id="mainnav" style="background-image: url(../App_Themes/Granite/Images/img02.gif); background-repeat: repeat-x;" class="mainnav">
+                &nbsp;</div>
+             <div id="floatwrapper" class="floatwrapper">
+                <table id = "table1" border="2" cellpadding="2" cellspacing="2" style="width: 100%; height: 71%; padding-right: 2px; padding-left: 2px; padding-bottom: 2px; margin: 2px; border-top-style: groove; padding-top: 2px; border-right-style: groove; border-left-style: groove; border-bottom-style: groove;">
+                    <tr>
+                        <td runat="server" id="tdTree" style="width: 150px; height: 600px; background-color: white;" valign="top">
+                                <asp:Panel ID="Panel1" runat="server" Height="600px" ScrollBars="Both" Width="200px">
+                             <asp:TreeView ID="tr" runat="server" NodeIndent="10" Width="197px" OnSelectedNodeChanged="tr_SelectedNodeChanged" MaxDataBindDepth="10" PopulateNodesFromClient="False">
+                                    <ParentNodeStyle Font-Bold="False" ImageUrl="~/App_Themes/Granite/Images/forms.gif" />
+                                    <HoverNodeStyle BackColor="#CCCCCC" BorderColor="#888888" BorderStyle="Solid" Font-Underline="True" />
+                                    <SelectedNodeStyle BackColor="White" BorderColor="#888888" BorderStyle="Solid" BorderWidth="1px"
+                                        Font-Underline="False" HorizontalPadding="3px" VerticalPadding="1px" ImageUrl="~/App_Themes/Granite/Images/Entry_down.gif" />
+                                    <NodeStyle Font-Names="Verdana" Font-Size="8pt" ForeColor="Black" HorizontalPadding="5px"
+                                        NodeSpacing="1px" VerticalPadding="2px" ImageUrl="~/App_Themes/Granite/Images/Entry.gif" />
+                                    <RootNodeStyle ImageUrl="~/App_Themes/Granite/Images/File.gif" />
+                                </asp:TreeView>
+  
+                    </asp:Panel>
+                               </td>
+                         <td style="width: 1px">&nbsp;</td>
+                        <td valign="top" colspan="2" rowspan="2" style="height: 600px">
+                        <div id="copy">
+							<asp:ContentPlaceHolder runat="server" ID="mainCopy">
+                            </asp:ContentPlaceHolder>
+						</div>
+                        </td>
+                    </tr>
+                </table>
+                 &nbsp;<asp:Label ID="Label2" runat="server" Text="..." Font-Bold="True" Font-Italic="False" ForeColor="Black" Font-Size="Larger"></asp:Label></div>
+                 
+		</div>	
+	</form>
+</body>
+</html>

@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<AppSettings>
+  <Server>(local)</Server>
+  <DBName>OceanWave</DBName>
+  <DBUser>sa</DBUser>
+  <DBPassword>sa123</DBPassword>
+  <DBAuthentication>Windows</DBAuthentication>
+  
+  <BackupFolder>c:\Backup\</BackupFolder>
+</AppSettings>
